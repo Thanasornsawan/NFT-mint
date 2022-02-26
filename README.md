@@ -13,11 +13,36 @@ NFT is JSON format like
 ```
 So, when you want the NFT to show on Opensea, you have to host this JSON file somewhere but it may not a good idea to rely on 3rd party.The best way is encode all JSON file into base64 format.That's why this project use base64 library.
 
-Before running this project, you need API key from Alchemy to be as node provider for deploy smart contract to rinkeby test network, API key from etherscan for verify your smart contract and private key of your metamask wallet on rinkeby test network and setup all credentials in your own .env file.
-
+Before running this project, you need to install dotenv and hardhat-etherscan plugin.
 ```shell
 npm install dotenv
 npm install --save-dev @nomiclabs/hardhat-etherscan
+```
+In order to use some plugins, API keys or custom network with secret config we need a .env file. You can check hardhat.config.js for more details.
+This project use API key from Alchemy to be as node provider for deploy smart contract to rinkeby test network, API key from etherscan for verify your smart contract and private key of your metamask wallet on rinkeby test network and setup all credentials in your own .env file.
+
+```javascript
+require("@nomiclabs/hardhat-waffle");
+require("dotenv").config();
+require("@nomiclabs/hardhat-etherscan");
+
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
+module.exports = {
+  solidity: "0.8.4",
+  networks: {
+    rinkeby: {
+      url: process.env.DEVELOP_ALCHEMY_KEY,
+      accounts: [process.env.PRIVATE_KEY]
+    },
+  },
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: process.env.ETHERSCAN_KEY
+  }
+};
 ```
 
 Try running some of the following tasks:
